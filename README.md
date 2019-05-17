@@ -12,7 +12,7 @@ First, if you plan to use OAuth, set your FileMaker Server to use AOuth for logg
 
 Next drop this folder into the node-wip/public folder on FileMaker Server 16. Rename the folder to "login"
 
-Navigate to https://<your-filemaker-server.com>/fmi/rest/login
+Navigate to https://<your-filemaker-server.com>/fmi/data/vLatest/login
 
 You should get an error message telling you that the parameters are missing. That means you have it installed correctly
 
@@ -20,7 +20,7 @@ You should get an error message telling you that the parameters are missing. Tha
 
 Here is how it works. When you want to let somebody login to the server, you send the to the following URL:
 
-https://<your-filemaker-server.com>/fmi/rest/login?callBack=<your-server/auth>&database=<db-to-login-to>&layout=<layout-to-login-to>
+https://<your-filemaker-server.com>/fmi/data/vLatest/login?callBack=<your-server/auth>&database=<db-to-login-to>&layout=<layout-to-login-to>
 
 Notice the three query params. You use those to config the login
 * callBack - the url where you will receive the results of the login.

@@ -7,7 +7,7 @@
 (function () {
 
     var _auth = {
-        apiPath: location.origin + '/fmi/rest/api/'
+        apiPath: location.origin + '/fmi/data/v1/databases/'
     }
 
     var FMLogin = function (credentials) {
