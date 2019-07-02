@@ -16,21 +16,19 @@
 
         var layout = localStorage.getItem('layout');
         var database = localStorage.getItem('database');
-        var connectionUrl = _auth.apiPath + "auth/" + encodeURIComponent(database);
+        var connectionUrl = _auth.apiPath + encodeURIComponent(database) + "/sessions";
+        var params = {};
+
         if (authType === 'oauth') {
-            var headers = { "X-FM-Data-Login-Type": "oauth" };
-            var params = {
-                "layout": layout,
-                "oAuthRequestId": _auth.oAuthRequestId,
-                "oAuthIdentifier": _auth.oAuthIdentifier
-            };
+            var headers = {
+        	"X-FM-Data-OAuth-Request-Id": _auth.oAuthRequestId
+        	, "X-FM-Data-OAuth-Identifier": _auth.oAuthIdentifier
+        	};
 
         } else {//Regular login with FM account
-            var params = {
-                "layout": layout,
-                "user": credentials.user,
-                "password": credentials.password
-            };
+            var headers = {
+            	"Authorization": "Basic " + btoa( credentials.user + ":" + credentials.password )
+            	};
         }
         var xhr = $.ajax({
             url: connectionUrl,
@@ -40,10 +38,10 @@
             type: "POST",
             data: JSON.stringify(params),
             success: function (res, textStatus, xhr) {
-                if (res.errorCode === "0") {
+                if (res.messages[0].code === "0") {
                     var d = {
                         authType: authType,
-                        token: res.token,
+                        token: res.response.token,
                         layout: layout,
                         database: database
                     }
@@ -62,7 +60,6 @@
                 } else {
                     util.showErrorDialog(lang.Error_Login_Failed, xhr.responseText)
                     util.enableBtnOnInput()
-                  
                 }
             },
             error: function (xhr, textStatus, thrownError) {
